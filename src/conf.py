@@ -1,5 +1,9 @@
+import sys
+import os
 import sphinx_bootstrap_theme
 from recommonmark.transform import AutoStructify
+
+sys.path.append(os.path.abspath('../exts'))
 
 # -- Curriculum Site Settings ------------------------------------------------
 
@@ -7,7 +11,7 @@ from recommonmark.transform import AutoStructify
 # dictionary below may be overriden here
 site_theme_options = {
     'navbar_title': 'CoderGirl C#',
-    'navbar_site_name': "Pages",
+    'navbar_site_name': "Lessons",
     'bootswatch_theme': 'codergirl',
 }
 
@@ -32,7 +36,13 @@ release = ''
 extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.githubpages',
+    'external_links',
+    'admonition_icons',
+    'replit',
+    'ordered_toctree',
 ]
+
+replit_user = 'launchcode'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -44,6 +54,10 @@ source_suffix = ['.rst', '.md']
 source_parsers = {'.md': 'recommonmark.parser.CommonMarkParser'}
 
 html_copy_source = True
+html_show_sourcelink = True
+highlight_language = 'none'
+html_show_copyright = False
+html_show_sphinx = False
 
 # The master toctree document.
 master_doc = 'index'
@@ -61,7 +75,7 @@ language = None
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'docs']
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'fruity'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -73,7 +87,7 @@ html_theme = 'bootstrap'
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
 # The logo that will appear in the navbar, relative to _static
-html_logo = '_static/images/logos/lc-logo.svg'
+html_logo = '_static/images/logos/lc-ed-logo.png'
 
 # Theme-specific options
 default_theme_options = {
@@ -104,7 +118,7 @@ default_theme_options = {
 
     # Global TOC depth for "site" navbar tab. (Default: 1)
     # Switching to -1 shows all levels.
-    'globaltoc_depth': 2,
+    'globaltoc_depth': 1,
 
     # Include hidden TOCs in Site navbar?
     #
@@ -113,7 +127,7 @@ default_theme_options = {
     # will break.
     #
     # Values: "true" (default) or "false"
-    'globaltoc_includehidden': "true",
+    'globaltoc_includehidden': "false",
 
     # HTML navbar class (Default: "navbar") to attach to <div> element.
     # For black navbar, do "navbar navbar-inverse"
@@ -125,10 +139,11 @@ default_theme_options = {
 
     # Location of link to source.
     # Options are "nav" (default), "footer" or anything else to exclude.
-    'source_link_position': "none",
+    'source_link_position': "footer",
 
     'bootswatch_theme': "launchcode",
     'bootstrap_version': "3",
+    'html_logo_alt_text': 'LaunchCode logo',
 }
 
 html_theme_options = {**default_theme_options, **site_theme_options}
@@ -148,7 +163,9 @@ html_static_path = ['_static']
 #
 html_sidebars = {
     '**': ['localtoc.html'],
-    'index': []
+    'index': [],
+    'search': [],
+    'about': []
 }
 
 
@@ -164,6 +181,7 @@ todo_include_todos = False
 
 
 def setup(app):
+    app.add_stylesheet('fa/css/all.css')
     app.add_stylesheet('css/launchcode.css')
     app.add_config_value('recommonmark_config', {
             'enable_eval_rst': True,
